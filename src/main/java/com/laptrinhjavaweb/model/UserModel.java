@@ -1,6 +1,6 @@
-package com.laptrinhjavaweb.emyeuanh;
+package com.laptrinhjavaweb.model;
 
-public class UserEmyeuanh {
+public class UserModel {
 	
 	private Long id;
 	private String fullName;
