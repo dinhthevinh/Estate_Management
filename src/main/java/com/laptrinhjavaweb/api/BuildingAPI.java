@@ -1,7 +1,9 @@
 package com.laptrinhjavaweb.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,26 +28,19 @@ public class BuildingAPI {
 	private BuildingService buildingService;
 
 //	@RequestMapping(method = RequestMethod.GET)
+	
 	@GetMapping
-	public List<BuildingSearchResponse> findAll(@RequestParam(value = "district", required = false) String district,
-			@RequestParam(value = "types", required = false) List<String> types,
-			@RequestParam(value = "staffid", required = false) Long staffid,
-			@RequestParam(value = "name", required = false) String name,
-			@RequestParam(value = "floorarea", required = false) Integer floorarea,
-			@RequestParam(value = "ward", required = false) String ward,
-			@RequestParam(value = "street", required = false) String street,
-			@RequestParam(value = "numberofbasement", required = false) Integer numberofbasement,
-			@RequestParam(value = "direction", required = false) String direction,
-			@RequestParam(value = "level", required = false) String level,
-			@RequestParam(value = "rentareafrom", required = false) Integer rentareafrom,
-			@RequestParam(value = "rentareato", required = false) Integer rentareato,
-			@RequestParam(value = "rentpricefrom", required = false) Integer rentpricefrom,
-			@RequestParam(value = "rentpriceto", required = false) Integer rentpriceto,
-			@RequestParam(value = "managername", required = false) String managername,
-			@RequestParam(value = "managerphone", required = false) String managerphone) {
-		List<BuildingSearchResponse> resutls = buildingService.findAll(district, types, staffid, name, floorarea, ward, street, numberofbasement, direction, level, rentareafrom, rentareato, rentpricefrom, rentpriceto, managername, managerphone);
+	public List<BuildingSearchResponse> findAll(@RequestParam Map<String, Object> requestParams,@RequestParam(value = "types", required = false) List<String> types  ) {	
+		List<BuildingSearchResponse> resutls = buildingService.findAll((String)requestParams.get("district"), types, Long.parseLong((String) requestParams.get("staffid"))
+				,(String)requestParams.get("name") ,Integer.parseInt((String) requestParams.get("floorarea")), (String)requestParams.get("ward")
+				,(String) requestParams.get("street"),Integer.parseInt((String) requestParams.get("numberofbasement")), (String)requestParams.get("direction"),
+				(String)requestParams.get("level"),Integer.parseInt((String)requestParams.get("rentareafrom")) ,Integer.parseInt((String)requestParams.get("rentareato")) ,Integer.parseInt((String)requestParams.get("rentpricefrom")),
+				Integer.parseInt((String)requestParams.get("rentpriceto")),(String)requestParams.get("managername") ,(String)requestParams.get("managerphone") );
 		return resutls;
+		
 	}
+	
+
 
 //	@RequestMapping(method = RequestMethod.POST)
 	@PostMapping
