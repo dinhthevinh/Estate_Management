@@ -2,6 +2,7 @@ package com.laptrinhjavaweb.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,10 @@ public class BuildingServiceImpl implements BuildingService {
 	private RentAreaRepository rentAreaRopository;
 
 	@Override
-	public List<BuildingSearchResponse> findAll(String district, List<String> types, Long staffid, String name,
-			Integer floorarea, String ward, String street, Integer numberofbasement, String direction, String level,
-			Integer rentareafrom, Integer rentareato, Integer rentpricefrom, Integer rentpriceto, String managername,
-			String managerphone) {
+	public List<BuildingSearchResponse> findAll(Map<String, Object> requestParams, List<String> types) {
 		List<BuildingSearchResponse> results = new ArrayList<>();
-		List<BuildingEntity> buildingEntities = buildingRepository.findAll(district, types, staffid, name, floorarea, ward, street, numberofbasement, direction, level, rentareafrom, rentareato, rentpricefrom, rentpriceto, managername, managerphone);	
-		StringBuilder areaEmpty = new StringBuilder();
-		
+		List<BuildingEntity> buildingEntities = buildingRepository.findAll(requestParams, types);	
+		StringBuilder areaEmpty = new StringBuilder();	
 		for (BuildingEntity item : buildingEntities) {	
 			BuildingSearchResponse buildingSearchResponse = new BuildingSearchResponse();
 			DistrictEntity districtEntity = districtRepository.findDistrictById(item.getDistrictId());

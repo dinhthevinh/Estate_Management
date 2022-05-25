@@ -28,8 +28,7 @@ public class DistrictRepositoryImpl implements DistrictRepository {
 			rs = stmt.executeQuery(sql);
 			// Extract data from result set
 			while (rs.next()) {		
-				DistrictEntity districtEntity = new DistrictEntity();
-				districtEntity.setName(rs.getString("name"));	
+				resutl.setName(rs.getString("name"));
 			}
 			return resutl;
 		} catch (SQLException e) {

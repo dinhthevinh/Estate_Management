@@ -31,15 +31,10 @@ public class BuildingAPI {
 	
 	@GetMapping
 	public List<BuildingSearchResponse> findAll(@RequestParam Map<String, Object> requestParams,@RequestParam(value = "types", required = false) List<String> types  ) {	
-		List<BuildingSearchResponse> resutls = buildingService.findAll((String)requestParams.get("district"), types, Long.parseLong((String) requestParams.get("staffid"))
-				,(String)requestParams.get("name") ,Integer.parseInt((String) requestParams.get("floorarea")), (String)requestParams.get("ward")
-				,(String) requestParams.get("street"),Integer.parseInt((String) requestParams.get("numberofbasement")), (String)requestParams.get("direction"),
-				(String)requestParams.get("level"),Integer.parseInt((String)requestParams.get("rentareafrom")) ,Integer.parseInt((String)requestParams.get("rentareato")) ,Integer.parseInt((String)requestParams.get("rentpricefrom")),
-				Integer.parseInt((String)requestParams.get("rentpriceto")),(String)requestParams.get("managername") ,(String)requestParams.get("managerphone") );
-		return resutls;
-		
+		List<BuildingSearchResponse> resutls = buildingService.findAll(requestParams, types);
+		return resutls;	
 	}
-	
+
 
 
 //	@RequestMapping(method = RequestMethod.POST)
