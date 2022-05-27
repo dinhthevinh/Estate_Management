@@ -6,6 +6,6 @@ import java.util.Map;
 import com.laptrinhjavaweb.repository.entity.BuildingEntity;
 
 public interface BuildingRepository {
-	List<BuildingEntity> findAll(Map<String, Object> requestParams, List<String> types);
+	List<BuildingEntity> findAll(Map<String, String> requestParams, List<String> types);
 
 }

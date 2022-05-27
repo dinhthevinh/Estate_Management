@@ -30,7 +30,7 @@ public class BuildingAPI {
 //	@RequestMapping(method = RequestMethod.GET)
 	
 	@GetMapping
-	public List<BuildingSearchResponse> findAll(@RequestParam Map<String, Object> requestParams,@RequestParam(value = "types", required = false) List<String> types  ) {	
+	public List<BuildingSearchResponse> findAll(@RequestParam Map<String, String> requestParams,@RequestParam(value = "types", required = false) List<String> types  ) {	
 		List<BuildingSearchResponse> resutls = buildingService.findAll(requestParams, types);
 		return resutls;	
 	}
