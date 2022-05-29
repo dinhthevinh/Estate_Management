@@ -82,10 +82,10 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			sql.append(" and district.code = '" + (String) requestParams.get("district") + "'");
 		}
 
-		if (staffid != null) {
+		if ( !StringUtils.isNullOrEmpty(requestParams.get("staffid"))) {
 			sql.append(
 					" inner join assignmentbuilding on  building.id = assignmentbuilding.buildingid and assignmentbuilding.staffid = "
-							+ staffid);
+							+ requestParams.get("staffid"));
 		}
 		if (types != null) {
 			sql.append(" inner join  buildingrenttype on building.id = buildingrenttype.buildingid \r\n"
@@ -97,29 +97,25 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		}
 
 		sql.append(" inner join  rentarea on building.id = rentarea.buildingid");
-		if (rentareato != null) {
-			sql.append(" and  rentarea.value <= " + rentareato + "");
+		if (!StringUtils.isNullOrEmpty(requestParams.get("rentareato"))) {
+			sql.append(" and  rentarea.value <= " + requestParams.get("rentareato") + "");
 		}
 
-		if (rentareafrom != null) {
-			sql.append(" and  rentarea.value >= " + rentareafrom + "");
+		if (!StringUtils.isNullOrEmpty(requestParams.get("rentareafrom"))) {
+			sql.append(" and  rentarea.value >= " + requestParams.get("rentareafrom") + "");
 		}
 		sql.append(" where 1=1");
 		return sql;
 	}
 
 	public StringBuilder conditionQuery(Map<String, String> requestParams) {
-		Integer floorarea = Integer.parseInt( requestParams.get("floorarea"));
-		Integer numberofbasement = Integer.parseInt( requestParams.get("numberofbasement"));
-		Integer rentpricefrom = Integer.parseInt( requestParams.get("rentpricefrom"));
-		Integer rentpriceto = Integer.parseInt( requestParams.get("rentpriceto"));
 		StringBuilder sql = new StringBuilder();
 		if (!StringUtils.isNullOrEmpty(requestParams.get("name"))) {
 			sql.append(" and building.name like '%" + requestParams.get("name") + "%'");
 		}
 
-		if (floorarea != null) {
-			sql.append(" and building.floorarea = " + floorarea + "");
+		if (!StringUtils.isNullOrEmpty(requestParams.get("floorarea")))  {
+			sql.append(" and building.floorarea = " + requestParams.get("floorarea") + "");
 		}
 
 		if (!StringUtils.isNullOrEmpty(requestParams.get("ward"))) {
@@ -129,8 +125,8 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			sql.append(" and building.street like '%" + requestParams.get("street") + "%'");
 		}
 
-		if (numberofbasement != null) {
-			sql.append(" and building.numberofbasement = " + numberofbasement + "");
+		if (!StringUtils.isNullOrEmpty(requestParams.get("numberofbasement")) ) {
+			sql.append(" and building.numberofbasement = " + requestParams.get("numberofbasement") + "");
 		}
 		if (!StringUtils.isNullOrEmpty(requestParams.get("direction"))) {
 			sql.append(" and building.direction like '%" + requestParams.get("direction") + "%'");
@@ -139,12 +135,12 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			sql.append(" and building.level like '%" + requestParams.get("level") + "%'");
 		}
 
-		if (rentpricefrom != null) {
-			sql.append(" and building.rentprice >= " + rentpricefrom + "");
+		if (!StringUtils.isNullOrEmpty(requestParams.get("rentpricefrom"))) {
+			sql.append(" and building.rentprice >= " + requestParams.get("rentpricefrom") + "");
 		}
 
-		if (rentpriceto != null) {
-			sql.append(" and building.rentprice <= " + rentpriceto + "");
+		if (!StringUtils.isNullOrEmpty(requestParams.get("rentpriceto"))) {
+			sql.append(" and building.rentprice <= " + requestParams.get("rentpriceto") + "");
 		}
 
 		if (!StringUtils.isNullOrEmpty(requestParams.get("managername"))) {

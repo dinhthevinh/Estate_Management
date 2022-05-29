@@ -39,7 +39,7 @@ public class BuildingServiceImpl implements BuildingService {
 				if (areaEmpty.length() > 1) {
 					areaEmpty.append(", ");
 				}
-				areaEmpty.append(a.getValue());
+				areaEmpty.append(a.getValue());		
 			}
 			buildingSearchResponse.setAreaEmpty(areaEmpty.toString());
 			buildingSearchResponse.setCreatedDate(item.getCreatedDate());

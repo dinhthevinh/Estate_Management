@@ -1,5 +1,7 @@
 package com.laptrinhjavaweb.repository.entity;
 
+import java.util.List;
+
 public class RentAreaEntity {
 	private Long buildingId;
 
@@ -20,5 +22,6 @@ public class RentAreaEntity {
 	public void setValue(Integer value) {
 		this.value = value;
 	}
+
 	
 }
