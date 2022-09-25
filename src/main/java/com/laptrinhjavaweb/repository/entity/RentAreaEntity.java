@@ -1,18 +1,39 @@
 package com.laptrinhjavaweb.repository.entity;
 
-import java.util.List;
 
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "rentarea")
 public class RentAreaEntity {
-	private Long buildingId;
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name = "value")
 	private Integer value;
-
-	public Long getBuildingId() {
-		return buildingId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buildingid")
+    private BuildingEntity building;
+	
+	
+	public Long getId() {
+		return id;
 	}
 
-	public void setBuildingId(Long buildingId) {
-		this.buildingId = buildingId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Integer getValue() {
@@ -23,5 +44,14 @@ public class RentAreaEntity {
 		this.value = value;
 	}
 
+	public BuildingEntity getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(BuildingEntity building) {
+		this.building = building;
+	}
+	
+	
 	
 }

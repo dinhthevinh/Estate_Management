@@ -1,29 +1,111 @@
 package com.laptrinhjavaweb.repository.entity;
 
-public class BuildingEntity {
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "building")
+public class BuildingEntity  {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private String name;
 
+    @Column(name = "name", nullable = false)
+    private String name; 
+    
+    @Column(name = "createddate")
 	private String createdDate;
-	
-	private Long districtId;
-
+    
+    @Column(name = "district")
+	private String district;
+    
+    @Column(name = "ward")
 	private String ward;
-
+    
+    @Column(name = "street")
 	private String street;
-
+    
+    @Column(name = "managername")
 	private String managerName;
-
+    
+    @Column(name = "managerphone")
 	private String managerPhone;
-
+    
+    @Column(name = "floorarea")
 	private Integer floorArea;
-
+    
+    @Column(name = "rentprice")
 	private Integer rentPrice;
-
+    
+    @Column(name = "servicefee")
 	private Integer serviceFee;
-
-	private Integer borkerageFee;
+    
+    @Column(name = "brokeragefee")
+	private Integer brokerageFee;
+    
+    @Column(name = "numberofbasement")
+	private Integer numberOfBasement;
+    
+    @Column(name = "rentpricedescription")
+	private String rentPriceDescription;
+    
+    @Column(name = "structure")
+	private String structure;
+    
+    @Column(name = "carfee")
+	private String carFee;
+    
+    @Column(name = "motofee")
+	private String motoFee;
+    
+    @Column(name = "overtimefee")
+	private String overtimeFee;
+    
+    @Column(name = "waterfee")
+	private String waterFee;
+    
+    @Column(name = "electricityfee")
+	private String electricityFee;
+    
+    @Column(name = "deposit")
+	private String deposit;
+    
+    @Column(name = "payment")
+	private String payment;
+    
+    @Column(name = "renttime")
+	private String rentTime;
+    
+    @Column(name = "decorationtime")
+	private String decorationTime;
+    
+    @Column(name = "level")
+	private String level;
+    
+    @Column(name = "direction")
+	private String direction;
+    
+    @Column(name = "note")
+	private String note;
+    
+    @Column(name = "type")
+	private String type;
+    
+    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
+    private List<RentAreaEntity> rentAreas = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
+    private List<AssignmentBuildingEntity> assignmentBuildings = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -49,12 +131,12 @@ public class BuildingEntity {
 		this.createdDate = createdDate;
 	}
 
-	public Long getDistrictId() {
-		return districtId;
+	public String getDistrict() {
+		return district;
 	}
 
-	public void setDistrictId(Long districtId) {
-		this.districtId = districtId;
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 
 	public String getWard() {
@@ -113,13 +195,54 @@ public class BuildingEntity {
 		this.serviceFee = serviceFee;
 	}
 
-	public Integer getBorkerageFee() {
-		return borkerageFee;
+	public Integer getBrokerageFee() {
+		return brokerageFee;
 	}
 
-	public void setBorkerageFee(Integer borkerageFee) {
-		this.borkerageFee = borkerageFee;
+	public void setBrokerageFee(Integer brokerageFee) {
+		this.brokerageFee = brokerageFee;
+	}
+
+	public List<RentAreaEntity> getRentAreas() {
+		return rentAreas;
+	}
+
+	public void setRentAreas(List<RentAreaEntity> rentAreas) {
+		this.rentAreas = rentAreas;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public List<AssignmentBuildingEntity> getAssignmentBuildings() {
+		return assignmentBuildings;
+	}
+
+	public void setAssignmentBuildings(List<AssignmentBuildingEntity> assignmentBuildings) {
+		this.assignmentBuildings = assignmentBuildings;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
 	}
 
 	
+    
 }

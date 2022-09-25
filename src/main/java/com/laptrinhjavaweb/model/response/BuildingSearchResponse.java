@@ -1,6 +1,7 @@
 package com.laptrinhjavaweb.model.response;
 
 public class BuildingSearchResponse {
+	private Long id;
 	private String createdDate;
 	private String name;
 	private String address;
@@ -11,6 +12,13 @@ public class BuildingSearchResponse {
 	private Integer rentPrice;
 	private Integer serviceFee;
 	private Integer borkerageFee;
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getCreatedDate() {
 		return createdDate;
 	}
