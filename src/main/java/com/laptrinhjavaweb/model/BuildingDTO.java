@@ -4,7 +4,7 @@ import java.util.List;
 
 public class BuildingDTO {
 	
-	private String id;
+	private Long id;
 	private String name;
 	private String district;
 	private String ward;
@@ -226,12 +226,15 @@ public class BuildingDTO {
 	public void setRentArea(String rentArea) {
 		this.rentArea = rentArea;
 	}
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
+
+	
+
 
 	
 

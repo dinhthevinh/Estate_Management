@@ -21,6 +21,7 @@ public class BuildingSearchRequest {
 	private String level;
 	private String managerName;
 	private String managerPhone;
+	
 	public String getName() {
 		return name;
 	}

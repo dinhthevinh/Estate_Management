@@ -103,26 +103,42 @@ public class BuildingServiceImpl implements BuildingService {
 	@Transactional
 	public void save(BuildingDTO buildingDTO) {
 		BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
-		BuildingEntity result =  buildingRepository.save(buildingEntity);	
-		List<RentAreaEntity> rentAreaEntities= buildingEntity.getRentAreas();
-		for (RentAreaEntity item : rentAreaEntities) {
-			if(item.getValue() != null) {
-				item.setBuilding(result);
-				rentAreaRopository.save(item);
+		List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreas();
+		if(buildingDTO.getId()!= null) {
+			List<RentAreaEntity> rentAreaEntitiesOld = buildingRepository.findById(buildingDTO.getId()).get().getRentAreas();
+			for (RentAreaEntity items: rentAreaEntitiesOld) {
+				rentAreaRopository.deleteById(items.getId());
 			}
 		}
+		BuildingEntity result =  buildingRepository.save(buildingEntity);
+		for (RentAreaEntity item : rentAreaEntities) {		
+				if(item.getValue() != null) {
+					item.setBuilding(result);
+					rentAreaRopository.save(item);
+				}				
+		}
+		
 	}
 	
 	@Override
 	@Transactional
-	public void delete(BuildingDTO buildingDTO) {
-//		BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
+	public void delete(BuildingDTO buildingDTO) {		
 		List<Long> buildingId= buildingDTO.getBuildingIds();
 		for (Long item : buildingId) {
-			buildingRepository.deleteById(item);			
+			BuildingEntity buildingEntity = buildingRepository.findById(item).get();
+			List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreas();
+			for (RentAreaEntity items: rentAreaEntities) {
+				rentAreaRopository.deleteById(items.getId());
+			}	
+			List<AssignmentBuildingEntity> assignmentBuildingEntities = buildingEntity.getAssignmentBuildings();
+			for (AssignmentBuildingEntity items: assignmentBuildingEntities) {
+				assignmentBuildingRepository.deleteById(items.getId());
+			}
+			buildingRepository.deleteById(item);				
 		}
 		
 	}
+	
 
 	@Override
 	public List<BuildingSearchResponse> findBuilding(BuildingSearchRequest request) {
@@ -168,12 +184,12 @@ public class BuildingServiceImpl implements BuildingService {
 	@Override
 	public List<StaffResponseDTO> findAssignmentBuildingByBuildingId(Long id) {
 		BuildingEntity buildingEntity = buildingRepository.findById(id).get();
-		List<StaffResponseDTO> result = new ArrayList<>();
+		List<StaffResponseDTO> results = new ArrayList<>();
 		List<AssignmentBuildingEntity> assignmentBuildingEntities = buildingEntity.getAssignmentBuildings();
 		List<UserEntity> userEntities = userRepository.findByStatusAndRolesCode(1, "staff");
 		List<Long> buildingIds= new ArrayList<>();
 		for (AssignmentBuildingEntity item : assignmentBuildingEntities) {
-			result.add(assignmentBuildingConverter.convertEntityToStaffResponseDTO(item));
+			results.add(assignmentBuildingConverter.convertEntityToStaffResponseDTO(item));
 			buildingIds.add(item.getUser().getId());
 			
 		}
@@ -183,10 +199,10 @@ public class BuildingServiceImpl implements BuildingService {
 				staffResponseDTO.setStaffId(item.getId());
 				staffResponseDTO.setFullName(item.getFullName());
 				staffResponseDTO.setChecked("");
-				result.add(staffResponseDTO);
+				results.add(staffResponseDTO);
 			}
 		}
-		return result;
+		return results;
 	}
 
 	@Override

@@ -2,6 +2,7 @@
 <%@include file="/common/taglib.jsp"%>
 <c:url var="buildingAPI" value="/api/building" />
 <c:url var="formUrl" value="/api/user" />
+<c:url var="redirect" value="/admin/list" />
 <html>
 <head>
 <title>Chỉnh sửa tòa nhà</title>
@@ -316,11 +317,9 @@
 	<!-- /.main-content -->
 
 	<script>
-	console.log("a111");
 		$('#district').val('${buildingModel.district}');
 		<c:forEach var="item" items="${buildingModel.types}">
 		$('#${item}')[0].checked = true;
-		 //document.getElementById("${item}").checked = true;
 		</c:forEach>
 		console.log("c");
 		 $('#btnAddBuilding').click(function(e) {
@@ -341,7 +340,7 @@
 			//data['rentArea'] = '100,200,300';
 			//buildingTypes.push('tang-tret');
 			//buildingTypes.push('nguyen-can');
-			data['buildTypes'] = buildingTypes;
+			data['types'] = buildingTypes;
 			data['id'] = "${buildingModel.id}";
 			$.ajax({
 				type : "POST",
@@ -351,6 +350,7 @@
 				contentType : "application/json",// kiểu dữ liệu từ client về sever			
 				success : function(response) {
 					console.log('success');
+					window.location.href = '${redirect}';
 				},
 				error : function(response) {
 					console.log('failed');

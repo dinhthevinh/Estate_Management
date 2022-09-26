@@ -59,11 +59,14 @@ public class BuildingConverter {
 			List<RentAreaEntity> areaEntities = new ArrayList<>();
 			for (String item : rentAreaStr) {
 				RentAreaEntity areaEntity= new RentAreaEntity();
-				areaEntity.setValue(Integer.parseInt(item));
+				areaEntity.setValue(Integer.parseInt(item.trim()));
 				areaEntities.add(areaEntity);
 			}
 			result.setRentAreas(areaEntities);
-		}	
+		}
+		List<String> buildingTypes= buildingDTO.getTypes();
+			String type = String.join(",", buildingTypes);	
+			result.setType(type);	
 		return result;
 	}
 	
