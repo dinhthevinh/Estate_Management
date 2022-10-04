@@ -12,6 +12,9 @@
                 </small>
             </a>
         </div>
+        
+        <div>
+        </div>
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
                 <li class="light-blue">

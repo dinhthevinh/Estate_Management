@@ -11,10 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
-import com.laptrinhjavaweb.builder.BuildingSearchBuilder.Builder;
-import com.laptrinhjavaweb.converter.AssignmentBuildingConverter;
 import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.converter.RentAreaConverter;
+import com.laptrinhjavaweb.converter.StaffResponseConverter;
 import com.laptrinhjavaweb.enums.BuildingTypesEnum;
 import com.laptrinhjavaweb.enums.DistrictsEnum;
 import com.laptrinhjavaweb.model.BuildingDTO;
@@ -22,12 +21,9 @@ import com.laptrinhjavaweb.model.RentAreaDTO;
 import com.laptrinhjavaweb.model.request.BuildingSearchRequest;
 import com.laptrinhjavaweb.model.response.BuildingSearchResponse;
 import com.laptrinhjavaweb.model.response.StaffResponseDTO;
-import com.laptrinhjavaweb.repository.AssignmentBuildingRepository;
 import com.laptrinhjavaweb.repository.BuildingRepository;
 import com.laptrinhjavaweb.repository.RentAreaRepository;
 import com.laptrinhjavaweb.repository.UserRepository;
-import com.laptrinhjavaweb.repository.custom.BuildingRepositoryCustom;
-import com.laptrinhjavaweb.repository.entity.AssignmentBuildingEntity;
 import com.laptrinhjavaweb.repository.entity.BuildingEntity;
 import com.laptrinhjavaweb.repository.entity.RentAreaEntity;
 import com.laptrinhjavaweb.repository.entity.UserEntity;
@@ -49,14 +45,11 @@ public class BuildingServiceImpl implements BuildingService {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
-	private AssignmentBuildingRepository assignmentBuildingRepository;
-	@Autowired
-	private AssignmentBuildingConverter assignmentBuildingConverter;
+	private StaffResponseConverter staffResponseConverter;
 
 	@Override
 	public List<BuildingSearchResponse> findBuilding(Map<String, String> requestParams, List<String> types) {
 		List<BuildingSearchResponse> results = new ArrayList<>();
-//		List<BuildingEntity> buildingEntities = buildingRepository.findBuilding(requestParams, types);
 		BuildingSearchBuilder builderSearchBuilder = coverToBuildingSearchBuilder(requestParams, types);
 		List<BuildingEntity> buildingEntities = buildingRepository.findBuilding(builderSearchBuilder);
 		for (BuildingEntity item : buildingEntities) {
@@ -92,8 +85,8 @@ public class BuildingServiceImpl implements BuildingService {
 	public List<RentAreaDTO> findRentAreaByBuildingId(Long buildingId) {
 		List<RentAreaDTO> results = new ArrayList<>();
 		BuildingEntity buildingEntity = buildingRepository.findById(buildingId).get();
-//		List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreas(); 
-		List<RentAreaEntity> rentAreaEntities = rentAreaRopository.findByBuildingId(buildingId);
+		List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreas(); 
+		//List<RentAreaEntity> rentAreaEntities = rentAreaRopository.findByBuildingId(buildingId);
 		results = rentAreaEntities.stream().map(item -> rentAreaConverter.convertEntityToDto(item))
 				.collect(Collectors.toList());
 		return results;
@@ -125,15 +118,6 @@ public class BuildingServiceImpl implements BuildingService {
 	public void delete(BuildingDTO buildingDTO) {		
 		List<Long> buildingId= buildingDTO.getBuildingIds();
 		for (Long item : buildingId) {
-			BuildingEntity buildingEntity = buildingRepository.findById(item).get();
-			List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreas();
-			for (RentAreaEntity items: rentAreaEntities) {
-				rentAreaRopository.deleteById(items.getId());
-			}	
-			List<AssignmentBuildingEntity> assignmentBuildingEntities = buildingEntity.getAssignmentBuildings();
-			for (AssignmentBuildingEntity items: assignmentBuildingEntities) {
-				assignmentBuildingRepository.deleteById(items.getId());
-			}
 			buildingRepository.deleteById(item);				
 		}
 		
@@ -185,15 +169,14 @@ public class BuildingServiceImpl implements BuildingService {
 	public List<StaffResponseDTO> findAssignmentBuildingByBuildingId(Long id) {
 		BuildingEntity buildingEntity = buildingRepository.findById(id).get();
 		List<StaffResponseDTO> results = new ArrayList<>();
-		List<AssignmentBuildingEntity> assignmentBuildingEntities = buildingEntity.getAssignmentBuildings();
-		List<UserEntity> userEntities = userRepository.findByStatusAndRolesCode(1, "staff");
+		List<UserEntity> userEntities = buildingEntity.getUsers();
+		List<UserEntity> staffs = userRepository.findByStatusAndRolesCode(1, "staff");
 		List<Long> buildingIds= new ArrayList<>();
-		for (AssignmentBuildingEntity item : assignmentBuildingEntities) {
-			results.add(assignmentBuildingConverter.convertEntityToStaffResponseDTO(item));
-			buildingIds.add(item.getUser().getId());
-			
-		}
 		for (UserEntity item : userEntities) {
+			results.add(staffResponseConverter.convertEntityToStaffResponseDTO(item));
+			buildingIds.add(item.getId());			
+		}
+		for (UserEntity item : staffs) {
 			if(!buildingIds.contains(item.getId())) {
 				StaffResponseDTO staffResponseDTO= new StaffResponseDTO();
 				staffResponseDTO.setStaffId(item.getId());
@@ -211,7 +194,5 @@ public class BuildingServiceImpl implements BuildingService {
 		BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingEntity);
 		return buildingDTO;
 	}
-
-	
 
 }

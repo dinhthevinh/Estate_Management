@@ -3,14 +3,7 @@ package com.laptrinhjavaweb.repository.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "building")
@@ -101,11 +94,19 @@ public class BuildingEntity  {
     @Column(name = "type")
 	private String type;
     
-    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private List<RentAreaEntity> rentAreas = new ArrayList<>();
     
-    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
-    private List<AssignmentBuildingEntity> assignmentBuildings = new ArrayList<>();
+
+    
+//    @ManyToMany(mappedBy = "buildings", fetch = FetchType.LAZY)
+//    private List<UserEntity> users = new ArrayList<>();
+    
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "assginmentbuilding",
+          joinColumns = @JoinColumn(name = "buildingid", nullable = false),
+          inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
+  private List<UserEntity> users = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -219,13 +220,6 @@ public class BuildingEntity  {
 		this.type = type;
 	}
 
-	public List<AssignmentBuildingEntity> getAssignmentBuildings() {
-		return assignmentBuildings;
-	}
-
-	public void setAssignmentBuildings(List<AssignmentBuildingEntity> assignmentBuildings) {
-		this.assignmentBuildings = assignmentBuildings;
-	}
 
 	public String getLevel() {
 		return level;
@@ -243,6 +237,123 @@ public class BuildingEntity  {
 		this.direction = direction;
 	}
 
+
+
+	public List<UserEntity> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<UserEntity> users) {
+		this.users = users;
+	}
+
+	public Integer getNumberOfBasement() {
+		return numberOfBasement;
+	}
+
+	public void setNumberOfBasement(Integer numberOfBasement) {
+		this.numberOfBasement = numberOfBasement;
+	}
+
+	public String getRentPriceDescription() {
+		return rentPriceDescription;
+	}
+
+	public void setRentPriceDescription(String rentPriceDescription) {
+		this.rentPriceDescription = rentPriceDescription;
+	}
+
+	public String getStructure() {
+		return structure;
+	}
+
+	public void setStructure(String structure) {
+		this.structure = structure;
+	}
+
+	public String getCarFee() {
+		return carFee;
+	}
+
+	public void setCarFee(String carFee) {
+		this.carFee = carFee;
+	}
+
+	public String getMotoFee() {
+		return motoFee;
+	}
+
+	public void setMotoFee(String motoFee) {
+		this.motoFee = motoFee;
+	}
+
+	public String getOvertimeFee() {
+		return overtimeFee;
+	}
+
+	public void setOvertimeFee(String overtimeFee) {
+		this.overtimeFee = overtimeFee;
+	}
+
+	public String getWaterFee() {
+		return waterFee;
+	}
+
+	public void setWaterFee(String waterFee) {
+		this.waterFee = waterFee;
+	}
+
+	public String getElectricityFee() {
+		return electricityFee;
+	}
+
+	public void setElectricityFee(String electricityFee) {
+		this.electricityFee = electricityFee;
+	}
+
+	public String getDeposit() {
+		return deposit;
+	}
+
+	public void setDeposit(String deposit) {
+		this.deposit = deposit;
+	}
+
+	public String getPayment() {
+		return payment;
+	}
+
+	public void setPayment(String payment) {
+		this.payment = payment;
+	}
+
+	public String getRentTime() {
+		return rentTime;
+	}
+
+	public void setRentTime(String rentTime) {
+		this.rentTime = rentTime;
+	}
+
+	public String getDecorationTime() {
+		return decorationTime;
+	}
+
+	public void setDecorationTime(String decorationTime) {
+		this.decorationTime = decorationTime;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	
+	
+	
 	
     
 }

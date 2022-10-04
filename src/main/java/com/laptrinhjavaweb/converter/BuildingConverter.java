@@ -98,8 +98,8 @@ public class BuildingConverter {
 				.setName(request.getName()).setDistrict(request.getDistrict()).setFloorArea(request.getFloorArea()).setStreet(request.getStreet())
 				.setWard(request.getWard()).setNumberOfBasement(request.getNumberOfBasement()).setRentAreaFrom(request.getRentAreaFrom())
 				.setRentAreaTo(request.getRentAreaTo()).setRentPriceFrom(request.getRentPriceFrom()).setRentPriceTo(request.getRentPriceTo())
-				.setStaffId(request.getStaffId()).setLevel(request.getLevel()).setManagerName(request.getManagerName()).setManagerPhone(request.getManagerPhone()).build();
-				
+				.setStaffId(request.getStaffId()).setLevel(request.getLevel()).setManagerName(request.getManagerName()).setManagerPhone(request.getManagerPhone())
+				.setBuildingTypes(request.getBuildingTypes()).build();			
 		return result;
 	}
 }

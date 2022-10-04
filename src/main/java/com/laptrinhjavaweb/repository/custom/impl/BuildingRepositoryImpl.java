@@ -192,7 +192,15 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 		Integer rentPriceTo = builder.getRentPriceTo();
 		Integer rentAreaFrom = builder.getRentAreaFrom();
 		Integer rentAreaTo = builder.getRentAreaTo();
-
+		List<String> buildingTypes = builder.getBuildingTypes();
+		
+		if(buildingTypes!= null && buildingTypes.size() != 0) {
+			sql.append(" and (");
+			String sqlJoin = buildingTypes.stream().map(item -> "building.type like '%" + item + "%'")
+					.collect(Collectors.joining(" or "));
+			sql.append(sqlJoin);
+			sql.append(")");
+		}
 		if (rentPriceTo != null) {
 			sql.append(" and building.rentprice <=" + rentPriceTo + "");
 		}

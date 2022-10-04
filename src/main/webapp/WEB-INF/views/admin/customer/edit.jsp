@@ -47,9 +47,8 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="district">Quận hiện có</label> 
 								<div class="col-sm-2">	
-								<select id="district" name="district">	
-									<option value="" label="--Chọn quận--"></option>						
-									<c:forEach var="item" items="${districts}">								
+								<select id="district" name="district">							
+									<c:forEach var="item" items="${districts}">
 										<option value="${item.key}">${item.value}</option>
 									</c:forEach>
 								</select>
