@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -25,18 +27,27 @@ public class CustomerEntity {
 	@Column(name = "fullname")
 	private String fullName;
 
-    @Column(name = "email", unique = true)
-    private String email;
+	@Column(name = "email", unique = true)
+	private String email;
 
-    @Column(name = "phone", unique = true)
-    private String phone;
-    
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade= CascadeType.ALL)
-    private List<TransactionEntity> transactions = new ArrayList<>();
-   
-    
-    @ManyToMany(mappedBy = "customers", fetch = FetchType.LAZY)
-    private List<UserEntity> users = new ArrayList<>();
+	@Column(name = "phone", unique = true)
+	private String phone;
+
+	@Column(name = "demand")
+	private String demand;
+
+	@Column(name = "companyname")
+	private String companyName;
+
+	@Column(name = "note")
+	private String note;
+
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<TransactionEntity> transactions = new ArrayList<>();
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "assginmentcustomer", joinColumns = @JoinColumn(name = "customerid", nullable = false), inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
+	private List<UserEntity> users = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -86,5 +97,28 @@ public class CustomerEntity {
 		this.users = users;
 	}
 
-    
+	public String getDemand() {
+		return demand;
+	}
+
+	public void setDemand(String demand) {
+		this.demand = demand;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
 }

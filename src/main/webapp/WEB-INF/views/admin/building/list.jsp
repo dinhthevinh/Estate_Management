@@ -29,7 +29,7 @@
 				</script>
 
 				<ul class="breadcrumb">
-					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">Home</a>
+					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="<c:url value='/admin/home'></c:url>">Home</a>
 					</li>
 					<li class="active">Dashboard</li>
 				</ul>
@@ -276,7 +276,7 @@
 											</button>
 											<button class="btn btn-xs btn-info" data-toggle="tooltip"
 												title="Cập nhật " onclick="updateBuilding(${item.id})">
-												<a href="<c:url value='/admin/edit?buildingid=${item.id}'></c:url>"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>				
+												<a href="<c:url value='/admin/edit-${item.id}'></c:url>"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>				
 											</button>
 										</td>
 									</tr>

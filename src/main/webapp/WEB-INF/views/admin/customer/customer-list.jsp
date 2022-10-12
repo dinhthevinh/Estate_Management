@@ -2,10 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
 <c:url var="customerListURL" value="/admin/customer-list" />
+<c:url var="loadStaffAPI" value="/api/customer" />
+<c:url var="assignmentCustomerAPI" value="/api/customer/assignment" />
 
-<c:url var="loadStaffAPI" value="/api/building" />
-<c:url var="buildingAPI" value="/api/building"/>
-<c:url var="assignmentBuildingAPI" value="/api/building/assignment"/>
+<c:url var="customerAPI" value="/api/customer" />
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -30,7 +31,7 @@
 				</script>
 
 				<ul class="breadcrumb">
-					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">Home</a>
+					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="<c:url value='/admin/home'></c:url>">Home</a>
 					</li>
 					<li class="active">Dashboard</li>
 				</ul>
@@ -57,32 +58,32 @@
 									<form:form modelAttribute="modelSearch"
 										action="${customerListURL}" id="listForm" method="GET">
 										<div class="form-horizontal">
-										
+
 											<div class="form-group">
 												<!-- PAGE CONTENT BEGINS -->
 
 												<div class=" col-sm-6">
 													<div>
 														<label for="fullName">Tên </label>
-														<form:input  path="fullName" cssClass="form-control"/>
+														<form:input path="fullName" cssClass="form-control" />
 
 													</div>
 												</div>
 												<div class=" col-sm-6">
 													<div>
-														<label for="phone">Di Động</label> 
-														<form:input  path="phone" cssClass="form-control"/>
+														<label for="phone">Di Động</label>
+														<form:input path="phone" cssClass="form-control" />
 													</div>
 												</div>
 											</div>
-											
+
 											<div class="form-group">
 												<!-- PAGE CONTENT BEGINS -->
 
 												<div class=" col-sm-6">
 													<div>
 														<label for="email">Email</label>
-														<form:input  path="email" cssClass="form-control"/>
+														<form:input path="email" cssClass="form-control" />
 
 													</div>
 												</div>
@@ -96,7 +97,7 @@
 													</div>
 												</div>
 											</div>
-									
+
 
 											<div class="form-group">
 												<div class=" col-sm-4">
@@ -107,7 +108,7 @@
 													</button>
 												</div>
 											</div>
-											
+
 										</div>
 									</form:form>
 
@@ -124,11 +125,14 @@
 					<div class="col-xs-12">
 						<div class="pull-right">
 							<button class="btn btn-white btn-info btn-bold"
-								data-toggle="tooltip" title="thêm tòa nhà" >								
-								<a href="<c:url value='/admin/edit'></c:url>"><i class="fa fa-plus" aria-hidden="true"></i></a>
+								data-toggle="tooltip" title="Thêm khách hàng">
+								<a href="<c:url value='/admin/customer-edit'></c:url>"> <i
+									class="fa fa-plus" aria-hidden="true"></i>
+								</a>
 							</button>
 							<button class="btn btn-white btn-warning btn-bold"
-								data-toggle="tooltip" title="xóa tòa nhà" id="btnDeleteBuilding">
+								data-toggle="tooltip" title="xóa khách hàng"
+								id="btnDeleteCustomer">
 								<i class="fa fa-trash" aria-hidden="true"></i>
 							</button>
 
@@ -138,12 +142,12 @@
 				<br>
 				<div class="row">
 					<div class="col-xs-12">
-						<table id="buildingList"
+						<table id="customerList"
 							class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
 									<th></th>
-									<th>Tên</th>
+									<th>Tên khách hàng</th>
 									<th>Nhân viên quản lí</th>
 									<th>Di động</th>
 									<th>Email</th>
@@ -157,25 +161,24 @@
 							<tbody>
 								<c:forEach var="item" items="${customers}">
 									<tr>
-										<td><input type="checkbox" value="${item.id}" id="checkbox_1">
-										</td>
-<%-- 										<td>${item.name}</td> --%>
-<%-- 										<td>${item.address}</td> --%>
-<%-- 										<td>${item.managerName}</td> --%>
-<%-- 										<td>${item.managerPhone}</td> --%>
-<%-- 										<td>${item.floorArea}</td> --%>
-<%-- 										<td>${item.areaEmpty}</td> --%>
-<%-- 										<td>${item.rentPrice}</td> --%>
-<%-- 										<td>${item.borkerageFee}</td> --%>
+										<td><input type="checkbox" value="${item.id}"
+											id="checkbox_1"></td>
+										<td>${item.fullName}</td>
+										<td>${item.managerName}</td>
+										<td>${item.managerPhone}</td>
+										<td>${item.email}</td>
+										<td>${item.demand}</td>
+										<td>${item.createdBy}</td>
+										<td>${item.createdDate}</td>
+										<td>${item.status}</td>
 										<td>
-<!-- 											<button class="btn btn-xs btn-info" data-toggle="tooltip" -->
-<%-- 												title="Giao tòa nhà" onclick="assignmentBuilding(${item.id})"> --%>
-<!-- 												<i class="fa fa-bars" aria-hidden="true"></i> -->
-<!-- 											</button> -->
-<!-- 											<button class="btn btn-xs btn-info" data-toggle="tooltip" -->
-<%-- 												title="Cập nhật " onclick="updateBuilding(${item.id})"> --%>
-<%-- 												<a href="<c:url value='/admin/edit?buildingid=${item.id}'></c:url>"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>				 --%>
-<!-- 											</button> -->
+																						<button class="btn btn-xs btn-info" data-toggle="tooltip"
+																							title="Giao khách hàng" onclick="assignmentCustomer(${item.id})">
+																							<i class="fa fa-bars" aria-hidden="true"></i>
+																						</button> 											<button class="btn btn-xs btn-info" data-toggle="tooltip"
+																							title="Cập nhật " onclick="updateCustomer(${item.id})">
+																							<a href="<c:url value='/admin/customer-edit-${item.id}'></c:url>"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>				
+																						</button>
 										</td>
 									</tr>
 								</c:forEach>
@@ -190,7 +193,7 @@
 	</div>
 	<!-- /.main-content -->
 
-	<div class="modal" id="assignmentBuildingModal">
+	<div class="modal" id="assignmentCustomerModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 
@@ -210,27 +213,15 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 						  <tr> -->
-							<!-- 							<td><input type="checkbox" value="2" id="checkbox_2" checked></td> -->
-							<!-- 							<td>Nguyễn Văn B</td> -->
-							<!-- 						  </tr> -->
-							<!-- 						  <tr> -->
-							<!-- 							<td><input type="checkbox" value="3" id="checkbox_3"></td> -->
-							<!-- 							<td>Nguyễn Văn C</td> -->
-							<!-- 						  </tr> -->
-							<!-- 						  <tr> -->
-							<!-- 							<td><input type="checkbox" value="4" id="checkbox_4"></td> -->
-							<!-- 							<td>Nguyễn Văn D</td> -->
-							<!-- 						  </tr> -->
+
 						</tbody>
 					</table>
-					<input type="hidden" id="buildingId" name="buildingID" value="">
 				</div>
 
 				<!-- Modal footer -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						id="btnAssignBuilding">Giao tòa nhà</button>
+						id="btnAssignCustomer">Giao khách hàng</button>
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">Đóng</button>
 				</div>
@@ -241,20 +232,21 @@
 
 	<script>
 		//chức năng assignment
-		let staffOld = [];
-		function assignmentBuilding(buildingId) {
-			openModalAssignmentBuilding();
-			loadStaff(buildingId);
-			$('#buildingId').val(buildingId);
-			//console.log($('#buildingId').val());
-		}
-	
 
-		function loadStaff(buildingId) {
+		let staffOld = [];
+		let customer = 0;
+		function assignmentCustomer(customerId) {
+			openModalAssignmentCustomer();
+			loadStaff(customerId);
+			customer = customerId;
+
+		}
+
+		function loadStaff(customerId) {
 			$
 					.ajax({
 						type : "GET",
-						url : "${loadStaffAPI}/"+buildingId+"/staffs", //đang gắn cứng cần load building id tự động
+						url : "${loadStaffAPI}/" + customerId + "/staffs", //đang gắn cứng cần load building id tự động
 						//data: JSON.stringify(data), // chuyển từ javaScript Object sang Json
 						dataType : "json", // kiểu dữ liệu từ sever về client
 						//contentType: "application/json",// kiểu dữ liệu từ client về sever			
@@ -271,8 +263,9 @@
 												row += '<td>' + item.fullName
 														+ '</td>';
 												row += '</tr>';
-												if(item.checked== 'checked'){
-													staffOld.push(item.staffId)												}
+												if (item.checked == 'checked') {
+													staffOld.push(item.staffId)
+												}
 											});
 							$('#staffList tbody').html(row);
 						},
@@ -283,23 +276,23 @@
 					});
 		}
 		//hiển thị modal
-		function openModalAssignmentBuilding() {
-			$('#assignmentBuildingModal').modal();
+		function openModalAssignmentCustomer() {
+			$('#assignmentCustomerModal').modal();
 		}
 
-		$('#btnAssignBuilding').click(
+		$('#btnAssignCustomer').click(
 				function(e) {
 					e.preventDefault();
 					var data = {};
 					var staffs = [];
-					data['buildingId'] = $('#buildingId').val();
+					data['customerId'] = customer;
 					//$('#staffList').find('tbody input[type = checkbox]');
-					var staffs = $('#staffList').find(
+					staffs = $('#staffList').find(
 							'tbody input[type = checkbox]:checked').map(
 							function() {
 								return $(this).val();
 							}).get();
-					
+
 					data['staffIdsNew'] = staffs;
 					data['staffIdsOld'] = staffOld
 					//call api
@@ -309,7 +302,7 @@
 		function assignStaff(data) {
 			$.ajax({
 				type : "POST",
-				url : "${assignmentBuildingAPI}", //
+				url : "${assignmentCustomerAPI}", //
 				data : JSON.stringify(data), // chuyển từ javaScript Object sang Json
 				dataType : "json", // kiểu dữ liệu từ sever về client
 				contentType : "application/json",// kiểu dữ liệu từ client về sever			
@@ -323,23 +316,23 @@
 			});
 		}
 
-		$('#btnDeleteBuilding').click(
+		$('#btnDeleteCustomer').click(
 				function(e) {
 					e.preventDefault();
 					var data = {};
-					var buildingIds = $('#buildingList').find(
+					var customerIds = $('#customerList').find(
 							'tbody input[type = checkbox]:checked').map(
 							function() {
 								return $(this).val();
 							}).get();
-					data['buildingIds'] = buildingIds;
-					deleteBuilding(data);
+					data['customerIds'] = customerIds;
+					deleteCustomer(data);
 				});
 
-		function deleteBuilding(data) {
+		function deleteCustomer(data) {
 			$.ajax({
 				type : "DELETE",
-				url : '${buildingAPI}', //thêm url api deleteBuilding
+				url : '${customerAPI}', //thêm url api deleteBuilding
 				data : JSON.stringify(data), // chuyển từ javaScript Object sang Json
 				dataType : "json", // kiểu dữ liệu từ sever về client
 				contentType : "application/json",// kiểu dữ liệu từ client về sever			
@@ -352,7 +345,6 @@
 				},
 			});
 		}
-		
 
 		$('#btnSearch').click(function(e) {
 			e.preventDefault();

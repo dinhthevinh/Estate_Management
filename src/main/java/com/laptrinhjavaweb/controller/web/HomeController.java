@@ -20,4 +20,9 @@ public class HomeController {
 		return mav;
 	}
 
+	@RequestMapping(value = "/access-denied", method = RequestMethod.GET)
+	public ModelAndView accessDenied() {
+		return new ModelAndView("redirect:/login?accessDenied");
+	}
+
 }

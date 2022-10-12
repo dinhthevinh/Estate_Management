@@ -124,20 +124,6 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 
 
 
-//	@Override
-//	public void save(BuildingEntity newBuilding) {
-//		if (newBuilding.getId() != null) {
-//			entityManager.merge(newBuilding);
-//		} else {
-//			entityManager.persist(newBuilding);
-//		}
-//	}
-
-//	@Override
-//	public void delete(BuildingEntity buildingEntity) {
-//		entityManager.remove(buildingEntity);
-//	}
-
 	@Override
 	public List<BuildingEntity> findBuilding(BuildingSearchBuilder builder) {
 		StringBuilder sql = new StringBuilder();

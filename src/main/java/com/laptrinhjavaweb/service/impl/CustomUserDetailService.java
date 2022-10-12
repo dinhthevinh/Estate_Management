@@ -1,0 +1,40 @@
+package com.laptrinhjavaweb.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.laptrinhjavaweb.model.MyUserDetail;
+import com.laptrinhjavaweb.model.RoleDTO;
+import com.laptrinhjavaweb.model.UserDTO;
+import com.laptrinhjavaweb.service.UserService;
+
+@Service
+public class CustomUserDetailService implements UserDetailsService {
+
+	@Autowired
+	private UserService userService;
+
+	@Override
+	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+		UserDTO userDTO = userService.findOneByUserNameAndStatus(name, 1);
+		if (userDTO == null) {
+			throw new UsernameNotFoundException("Username not found");
+		}
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		for (RoleDTO role : userDTO.getRoles()) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getCode()));
+		}
+		MyUserDetail myUserDetail = new MyUserDetail(name, userDTO.getPassword(), true, true, true, true, authorities);
+		BeanUtils.copyProperties(userDTO, myUserDetail);// có td như mapper để map filed giống nhau
+		return myUserDetail;
+	}
+}

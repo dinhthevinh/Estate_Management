@@ -8,6 +8,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import com.laptrinhjavaweb.builder.CustomerSearchBuilder;
 import com.laptrinhjavaweb.repository.custom.UserRepositoryCustom;
 import com.laptrinhjavaweb.repository.entity.UserEntity;
 
@@ -23,6 +24,12 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 				+ "where user.status = "+status+" and role.code = '" +roleCode+"'";
 		return entityManager.createNativeQuery(sql, UserEntity.class).getResultList();
 		
+	}
+
+	@Override
+	public List<UserEntity> findCustomer(CustomerSearchBuilder customerSearchBuilder) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

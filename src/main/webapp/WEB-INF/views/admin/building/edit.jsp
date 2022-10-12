@@ -19,7 +19,7 @@
 				</script>
 
 				<ul class="breadcrumb">
-					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">Home</a>
+					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="<c:url value='/admin/home'></c:url>">Home</a>
 					</li>
 					<li class="active">Dashboard</li>
 				</ul>
@@ -48,7 +48,7 @@
 								<label class="col-sm-3 control-label no-padding-right" for="district">Quận hiện có</label> 
 								<div class="col-sm-2">	
 								<select id="district" name="district">	
-									<option value="" label="--Chọn quận--"></option>						
+									<option label="--Chọn quận--"></option>						
 									<c:forEach var="item" items="${districts}">								
 										<option value="${item.key}">${item.value}</option>
 									</c:forEach>

@@ -2,7 +2,6 @@ package com.laptrinhjavaweb.repository.entity;
 
 import javax.persistence.*;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,32 +30,19 @@ public class UserEntity  {
     @Column(name = "fullname")
     private String fullName;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<UserRoleEntity> userRoles = new ArrayList<>();
-    
-
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "userrole",
             joinColumns = @JoinColumn(name = "userid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "roleid", nullable = false))
     private List<RoleEntity> roles = new ArrayList<>();
     
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "assginmentbuilding",
-//            joinColumns = @JoinColumn(name = "staffid", nullable = false),
-//            inverseJoinColumns = @JoinColumn(name = "buildingid", nullable = false))
-//    private List<BuildingEntity> buildings = new ArrayList<>();
     
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<BuildingEntity> buildings = new ArrayList<>();
 
     
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "assginmentcustomer",
-            joinColumns = @JoinColumn(name = "staffid", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "customerid", nullable = false))
-    private List<BuildingEntity> customers = new ArrayList<>();
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<CustomerEntity> customers = new ArrayList<>();
     
     
     public Long getId() {
@@ -115,13 +101,6 @@ public class UserEntity  {
         this.email = email;
     }
 
-//	public List<UserRoleEntity> getUserRoles() {
-//		return userRoles;
-//	}
-//
-//	public void setUserRoles(List<UserRoleEntity> userRoles) {
-//		this.userRoles = userRoles;
-//	}
 
 
 	public List<BuildingEntity> getBuildings() {
@@ -132,13 +111,15 @@ public class UserEntity  {
 		this.buildings = buildings;
 	}
 
-	public List<BuildingEntity> getCustomers() {
+	public List<CustomerEntity> getCustomers() {
 		return customers;
 	}
 
-	public void setCustomers(List<BuildingEntity> customers) {
+	public void setCustomers(List<CustomerEntity> customers) {
 		this.customers = customers;
 	}
+
+	
     
 	
     

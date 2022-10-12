@@ -49,6 +49,13 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
+                 <li class="">
+                    <a href='<c:url value='/admin/customer-list'/>'>
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        DS khách hàng
+                    </a>
+                    
+                </li>
             </ul>
         </li>
     </ul>
