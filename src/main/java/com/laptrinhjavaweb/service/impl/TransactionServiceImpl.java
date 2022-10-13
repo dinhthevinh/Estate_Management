@@ -43,4 +43,10 @@ public class TransactionServiceImpl implements TransactionService {
 		return transactionTypes;
 	}
 
+	@Override
+	public void save(TransactionDTO transactionDTO) {
+		TransactionEntity transactionEntity = transactionConverter.convertDTOToEntity(transactionDTO);
+		transactionRepository.save(transactionEntity);
+	}
+
 }

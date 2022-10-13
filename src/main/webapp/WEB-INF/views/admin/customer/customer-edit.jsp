@@ -3,6 +3,7 @@
 
 <c:url var="customerAPI" value="/api/customer" />
 <c:url var="redirect" value="/admin/customer-list" />
+<c:url var="transactionAPI" value="/api/transaction" />
 <html>
 <head>
 <title>Chỉnh sửa tòa nhà</title>
@@ -19,8 +20,8 @@
 				</script>
 
 				<ul class="breadcrumb">
-					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="<c:url value='/admin/home'></c:url>">Home</a>
-					</li>
+					<li><i class="ace-icon fa fa-home home-icon"></i> <a
+						href="<c:url value='/admin/home'></c:url>">Home</a></li>
 					<li class="active">Dashboard</li>
 				</ul>
 				<!-- /.breadcrumb -->
@@ -95,34 +96,41 @@
 								</div>
 							</div>
 
-							<div class="row" >
-							<c:forEach var="item" items="${transactions}">
-							<h2>${item.transactionType}</h2>
-								<table id="buildingList"
-									class="table table-striped table-bordered table-hover">
-									<thead>
-										<tr>
-											<th>Ngày tạo</th>
-											<th>Ghi chú</th>
+							<div class="row">
+								<c:forEach var="item" items="${transactions}">								
+										<h2>${item.transactionType}
+										<button class="btn btn-white btn-info btn-bold" onclick="myFunction(this.id, ${customerModel.id})" id="${item.code}"
+											title="Thêm giao dịch">
+											 <i
+												class="fa fa-plus" aria-hidden="true"></i>
+										</button>
+										</h2>
 
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>${item.createdDate}</td>
-											<td>${item.note}</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td></td>
-										</tr>
+									<table id="transactionList"
+										class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th>Ngày tạo</th>
+												<th>Ghi chú</th>
 
-									</tbody>
-								</table>
-							</c:forEach>
-								
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>${item.createdDate}</td>
+												<td>${item.note}</td>
+											</tr>
+											<tr>
+												<td></td>
+												<td></td>
+											</tr>
 
-								
+										</tbody>
+									</table>
+								</c:forEach>
+
+
+
 							</div>
 							</form>
 						</form:form>
@@ -138,18 +146,40 @@
 	<!-- /.main-content -->
 
 	<script>
-		
-
-		console.log("c");
-		 $('#btnAddCustomer').click(function(e) {
+	function myFunction(code, customerId) {
+		var data = {};
+	  let note = prompt("Thêm chi tiết giao dịch");
+	  if (note != null) {
+		 
+	    	data['code'] = code;
+	    	data['customerId'] = customerId;
+	    	data['note'] = note;
+		  $.ajax({
+				type : "POST",
+				url : '${transactionAPI}', //thêm url api addBuilding
+				data : JSON.stringify(data), // chuyển từ javaScript Object sang Json
+				dataType : "json", // kiểu dữ liệu từ sever về client
+				contentType : "application/json",// kiểu dữ liệu từ client về sever			
+				success : function(response) {
+					console.log('success');
+// 					window.location.href = '${redirect}';
+				},
+				error : function(response) {
+					console.log('failed');
+					console.log(response);
+				},
+			});
+	  }
+	}
+		$('#btnAddCustomer').click(function(e) {
 			e.preventDefault();
 			//call api addBuilding
 			var data = {}; // định dạng jason nhưng data là javaScript Object phải chuyển sang jason để sever nhận		
 			var formdata = $('#formEdit').serializeArray();
-			$.each(formdata, function(index, v) {			
-					data["" + v.name + ""] = v.value;			
+			$.each(formdata, function(index, v) {
+				data["" + v.name + ""] = v.value;
 			});
-					
+
 			data['id'] = "${customerModel.id}";
 			$.ajax({
 				type : "POST",
@@ -168,7 +198,6 @@
 			});
 
 		});
-		 
 	</script>
 
 </body>

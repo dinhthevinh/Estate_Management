@@ -1,5 +1,7 @@
 package com.laptrinhjavaweb.repository.entity;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "transaction")
 public class TransactionEntity {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -21,12 +23,15 @@ public class TransactionEntity {
 	@Column(name = "code")
 	private String code;
 
-    @Column(name = "note")
-    private String note;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customerid")
-    private CustomerEntity customer;
+	@Column(name = "note")
+	private String note;
+
+	@Column(name = "createddate", columnDefinition = "DATE")
+	private Date createdDate;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customerid")
+	private CustomerEntity customer;
 
 	public Long getId() {
 		return id;
@@ -59,7 +64,13 @@ public class TransactionEntity {
 	public void setCustomer(CustomerEntity customer) {
 		this.customer = customer;
 	}
-    
-    
-    
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
 }

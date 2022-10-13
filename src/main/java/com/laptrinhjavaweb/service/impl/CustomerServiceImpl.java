@@ -96,17 +96,22 @@ public class CustomerServiceImpl implements CustomerService {
 	@Transactional
 	public void save(CustomerDTO customerDTO) {
 		CustomerEntity customerEntity = customerConverter.convertDTOToEntity(customerDTO);
-		CustomerEntity customerEntityOld = customerRepository.findById(customerDTO.getId()).get();
-		customerEntity.setUsers(customerEntityOld.getUsers());
-		customerEntity.setTransactions(customerEntityOld.getTransactions());
+		if (customerDTO.getId() != null) {
+			CustomerEntity customerEntityOld = customerRepository.findById(customerDTO.getId()).get();
+			customerEntity.setUsers(customerEntityOld.getUsers());
+			customerEntity.setTransactions(customerEntityOld.getTransactions());
+		}
 		customerRepository.save(customerEntity);
 	}
 
 	@Override
 	@Transactional
 	public void delete(CustomerDTO customerDTO) {
-		List<Long> customerIds = customerDTO.getCustomerIds();
-		customerRepository.deleteByIdIn(customerIds);
+		List<String> roles = SecurityUtils.getAuthorities();
+		if (roles.contains("ROLE_manager")) {
+			List<Long> customerIds = customerDTO.getCustomerIds();
+			customerRepository.deleteByIdIn(customerIds);
+		}
 	}
 
 }

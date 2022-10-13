@@ -1,7 +1,6 @@
 package com.laptrinhjavaweb.repository.custom.impl;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -122,8 +121,6 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 		return sql;
 	}
 
-
-
 	@Override
 	public List<BuildingEntity> findBuilding(BuildingSearchBuilder builder) {
 		StringBuilder sql = new StringBuilder();
@@ -141,7 +138,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 		Long staffid = builder.getStaffId();
 		if (staffid != null) {
 			sql.append(
-					" inner join assignmentbuilding on  building.id = assignmentbuilding.buildingid and assignmentbuilding.staffid = "
+					" inner join assginmentbuilding on  building.id = assginmentbuilding.buildingid and assginmentbuilding.staffid = "
 							+ staffid);
 		}
 		return sql;
@@ -154,7 +151,8 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 			for (Field field : fields) {
 				field.setAccessible(true);
 				String fieldName = field.getName();
-				if (!fieldName.equals("staffid") && !fieldName.startsWith("rentArea") && !fieldName.startsWith("rentPrice")) {
+				if (!fieldName.equals("staffid") && !fieldName.startsWith("rentArea")
+						&& !fieldName.startsWith("rentPrice")) {
 					Object objectValue = field.get(builder);
 					if (objectValue != null && !objectValue.toString().isEmpty()) {
 						if (field.getType().getName().equals("java.lang.String")) {
@@ -179,8 +177,8 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 		Integer rentAreaFrom = builder.getRentAreaFrom();
 		Integer rentAreaTo = builder.getRentAreaTo();
 		List<String> buildingTypes = builder.getBuildingTypes();
-		
-		if(buildingTypes!= null && buildingTypes.size() != 0) {
+
+		if (buildingTypes != null && buildingTypes.size() != 0) {
 			sql.append(" and (");
 			String sqlJoin = buildingTypes.stream().map(item -> "building.type like '%" + item + "%'")
 					.collect(Collectors.joining(" or "));

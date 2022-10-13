@@ -27,10 +27,10 @@ public class CustomerEntity {
 	@Column(name = "fullname")
 	private String fullName;
 
-	@Column(name = "email", unique = true)
+	@Column(name = "email")
 	private String email;
 
-	@Column(name = "phone", unique = true)
+	@Column(name = "phone")
 	private String phone;
 
 	@Column(name = "demand")

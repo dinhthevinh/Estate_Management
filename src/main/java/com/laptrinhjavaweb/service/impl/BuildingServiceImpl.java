@@ -98,6 +98,8 @@ public class BuildingServiceImpl implements BuildingService {
 		if (buildingDTO.getId() != null) {
 			rentAreaEntities = buildingRepository.findById(buildingDTO.getId()).get().getRentAreas();
 			buildingEntity.getRentAreas().removeAll(rentAreaEntities);
+			List<UserEntity> userEntities = buildingRepository.findById(buildingDTO.getId()).get().getUsers();
+			buildingEntity.setUsers(userEntities);
 		}
 		for (RentAreaEntity item : buildingEntity.getRentAreas()) {
 			item.setBuilding(buildingEntity);
@@ -109,8 +111,12 @@ public class BuildingServiceImpl implements BuildingService {
 	@Override
 	@Transactional
 	public void delete(BuildingDTO buildingDTO) {
-		List<Long> buildingId = buildingDTO.getBuildingIds();
-		buildingRepository.deleteByIdIn(buildingId);
+		List<String> roles = SecurityUtils.getAuthorities();
+		if (roles.contains("ROLE_manager")) {
+			List<Long> buildingId = buildingDTO.getBuildingIds();
+			buildingRepository.deleteByIdIn(buildingId);
+		}
+
 	}
 
 	@Override

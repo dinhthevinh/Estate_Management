@@ -9,4 +9,6 @@ public interface TransactionService {
 	List<TransactionDTO> findTransactionByCustomerId(Long customerId);
 
 	Map<String, String> getTransactionTypes();
+
+	void save(TransactionDTO transactionDTO);
 }

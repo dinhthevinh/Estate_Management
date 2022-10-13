@@ -19,6 +19,23 @@ public class TransactionConverter {
 		String transactionvalue = null;
 		if (transactionEntity.getCode() != null) {
 			transactionvalue = TransactionTypesEnum.valueOf(transactionEntity.getCode()).getTransactionValue();
+
+		}
+		result.setTransactionType(transactionvalue);
+		return result;
+	}
+
+	public TransactionEntity convertDTOToEntity(TransactionDTO transactionDTO) {
+		TransactionEntity result = modelMapper.map(transactionDTO, TransactionEntity.class);
+		return result;
+	}
+
+	public TransactionDTO convertEntituToDTO(TransactionEntity transactionEntity) {
+		TransactionDTO result = modelMapper.map(transactionEntity, TransactionDTO.class);
+		String transactionvalue = null;
+		if (transactionEntity.getCode() != null) {
+			transactionvalue = TransactionTypesEnum.valueOf(transactionEntity.getCode()).getTransactionValue();
+
 		}
 		result.setTransactionType(transactionvalue);
 		return result;
