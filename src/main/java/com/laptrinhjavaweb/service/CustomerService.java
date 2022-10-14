@@ -1,6 +1,7 @@
 package com.laptrinhjavaweb.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.laptrinhjavaweb.model.CustomerDTO;
 import com.laptrinhjavaweb.model.request.CustomerSearchRequest;
@@ -17,4 +18,6 @@ public interface CustomerService {
 	void save(CustomerDTO customerDTO);
 
 	void delete(CustomerDTO customerDTO);
+
+	Map<String, String> getTransactionTypes();
 }

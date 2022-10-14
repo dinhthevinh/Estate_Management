@@ -97,14 +97,13 @@
 							</div>
 
 							<div class="row">
-								<c:forEach var="item" items="${transactions}">								
-										<h2>${item.transactionType}
-										<button class="btn btn-white btn-info btn-bold" onclick="myFunction(this.id, ${customerModel.id})" id="${item.code}"
-											title="Thêm giao dịch">
-											 <i
-												class="fa fa-plus" aria-hidden="true"></i>
-										</button>
-										</h2>
+								<c:forEach var="item" items="${transactionEnums}">
+									<h2>${item.value}</h2>
+									<button class="btn btn-white btn-info btn-bold"
+										onclick="myFunction(this.id,${customerModel.id})"
+										id="${item.key}" title="Thêm giao dịch">
+										<i class="fa fa-plus" aria-hidden="true"></i>
+									</button>
 
 									<table id="transactionList"
 										class="table table-striped table-bordered table-hover">
@@ -112,25 +111,20 @@
 											<tr>
 												<th>Ngày tạo</th>
 												<th>Ghi chú</th>
-
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td>${item.createdDate}</td>
-												<td>${item.note}</td>
-											</tr>
-											<tr>
-												<td></td>
-												<td></td>
-											</tr>
-
+										<c:forEach var="jtem" items="${transactions}">
+												<c:if test="${jtem.code == item.key}">
+													<tr>
+														<td>${jtem.createdDate}</td>
+														<td>${jtem.note}</td>
+													</tr>
+												</c:if>
+										</c:forEach>
 										</tbody>
 									</table>
 								</c:forEach>
-
-
-
 							</div>
 							</form>
 						</form:form>

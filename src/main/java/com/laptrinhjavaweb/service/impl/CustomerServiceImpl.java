@@ -1,7 +1,9 @@
 package com.laptrinhjavaweb.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +14,7 @@ import com.laptrinhjavaweb.builder.CustomerSearchBuilder;
 import com.laptrinhjavaweb.converter.CustomerConverter;
 import com.laptrinhjavaweb.converter.StaffResponseConverter;
 import com.laptrinhjavaweb.converter.UserConverter;
+import com.laptrinhjavaweb.enums.TransactionTypesEnum;
 import com.laptrinhjavaweb.model.CustomerDTO;
 import com.laptrinhjavaweb.model.MyUserDetail;
 import com.laptrinhjavaweb.model.request.CustomerSearchRequest;
@@ -104,6 +107,15 @@ public class CustomerServiceImpl implements CustomerService {
 			List<Long> customerIds = customerDTO.getCustomerIds();
 			customerRepository.deleteByIdIn(customerIds);
 		}
+	}
+
+	@Override
+	public Map<String, String> getTransactionTypes() {
+		Map<String, String> getTransactionTypes = new HashMap<>();
+		for (TransactionTypesEnum item : TransactionTypesEnum.values()) {
+			getTransactionTypes.put(item.toString(), item.getTransactionValue());
+		}
+		return getTransactionTypes;
 	}
 
 }

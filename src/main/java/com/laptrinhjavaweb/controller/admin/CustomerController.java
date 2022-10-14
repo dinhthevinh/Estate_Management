@@ -47,6 +47,7 @@ public class CustomerController {
 		ModelAndView mav = new ModelAndView("admin/customer/customer-edit");
 		mav.addObject("customerModel", customerService.findCustomerById(customerid));
 		mav.addObject("transactions", transactionService.findTransactionByCustomerId(customerid));
+		mav.addObject("transactionEnums", customerService.getTransactionTypes());
 		return mav;
 	}
 }
