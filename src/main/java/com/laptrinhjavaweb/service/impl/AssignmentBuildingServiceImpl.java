@@ -31,10 +31,7 @@ public class AssignmentBuildingServiceImpl implements AssignmentBuildingService 
 			List<Long> staffIdsNew = assignmentRequest.getStaffIdsNew();
 			BuildingEntity buildingEntity = buildingRepository.findById(assignmentRequest.getBuildingId()).get();
 			List<UserEntity> userEntities = new ArrayList<UserEntity>();
-			for (Long item : staffIdsNew) {
-				UserEntity userEntity = userRepository.findById(item).get();
-				userEntities.add(userEntity);
-			}
+			userEntities = userRepository.findByIdIn(staffIdsNew);
 			buildingEntity.setUsers(userEntities);
 			buildingRepository.save(buildingEntity);
 		}

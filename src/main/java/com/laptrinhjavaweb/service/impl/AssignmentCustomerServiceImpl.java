@@ -31,10 +31,7 @@ public class AssignmentCustomerServiceImpl implements AssignmentCustomerService 
 			List<Long> staffIdsNew = assignmentRequest.getStaffIdsNew();
 			CustomerEntity customerEntity = customerRepository.findById(assignmentRequest.getCustomerId()).get();
 			List<UserEntity> userEntities = new ArrayList<UserEntity>();
-			for (Long item : staffIdsNew) {
-				UserEntity userEntity = userRepository.findById(item).get();
-				userEntities.add(userEntity);
-			}
+			userEntities = userRepository.findByIdIn(staffIdsNew);
 			customerEntity.setUsers(userEntities);
 			customerRepository.save(customerEntity);
 		}

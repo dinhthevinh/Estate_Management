@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.laptrinhjavaweb.builder.CustomerSearchBuilder;
 import com.laptrinhjavaweb.converter.CustomerConverter;
 import com.laptrinhjavaweb.converter.StaffResponseConverter;
+import com.laptrinhjavaweb.converter.UserConverter;
 import com.laptrinhjavaweb.model.CustomerDTO;
 import com.laptrinhjavaweb.model.MyUserDetail;
 import com.laptrinhjavaweb.model.request.CustomerSearchRequest;
@@ -32,6 +33,8 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
+	private UserConverter userConverter;
+	@Autowired
 	private StaffResponseConverter staffResponseConverter;
 
 	@Override
@@ -41,21 +44,13 @@ public class CustomerServiceImpl implements CustomerService {
 		if (roles.contains("ROLE_staff")) {
 			MyUserDetail myUserDetail = MyUserDetail.class
 					.cast(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//			CustomerSearchBuilder builder = customerConverter.convertSearchRequestToSearchBuilder(customerSearchRequest);
-			UserEntity userEntity = userRepository.findById(myUserDetail.getId()).get();
-			List<CustomerEntity> customerEntities = userEntity.getCustomers();
-			for (CustomerEntity item : customerEntities) {
-				CustomerSearchResponse customerSearchResponse = customerConverter.convertEntityToSearchResponse(item);
-				results.add(customerSearchResponse);
-			}
-		} else {
-			CustomerSearchBuilder builder = customerConverter
-					.convertSearchRequestToSearchBuilder(customerSearchRequest);
-			List<CustomerEntity> customerEntities = customerRepository.findCustomer(builder);
-			for (CustomerEntity item : customerEntities) {
-				CustomerSearchResponse customerSearchResponse = customerConverter.convertEntityToSearchResponse(item);
-				results.add(customerSearchResponse);
-			}
+			customerSearchRequest.setStaffId(myUserDetail.getId());
+		}
+		CustomerSearchBuilder builder = customerConverter.convertSearchRequestToSearchBuilder(customerSearchRequest);
+		List<CustomerEntity> customerEntities = customerRepository.findCustomer(builder);
+		for (CustomerEntity item : customerEntities) {
+			CustomerSearchResponse customerSearchResponse = customerConverter.convertEntityToSearchResponse(item);
+			results.add(customerSearchResponse);
 		}
 
 		return results;
@@ -74,10 +69,7 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 		for (UserEntity item : staffs) {
 			if (!customerIds.contains(item.getId())) {
-				StaffResponseDTO staffResponseDTO = new StaffResponseDTO();
-				staffResponseDTO.setStaffId(item.getId());
-				staffResponseDTO.setFullName(item.getFullName());
-				staffResponseDTO.setChecked("");
+				StaffResponseDTO staffResponseDTO = userConverter.covertEntityToStaffResponseDTO(item);
 				results.add(staffResponseDTO);
 			}
 		}

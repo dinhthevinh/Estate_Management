@@ -15,6 +15,7 @@ import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.converter.RentAreaConverter;
 import com.laptrinhjavaweb.converter.StaffResponseConverter;
+import com.laptrinhjavaweb.converter.UserConverter;
 import com.laptrinhjavaweb.enums.BuildingTypesEnum;
 import com.laptrinhjavaweb.enums.DistrictsEnum;
 import com.laptrinhjavaweb.model.BuildingDTO;
@@ -44,6 +45,8 @@ public class BuildingServiceImpl implements BuildingService {
 	private RentAreaConverter rentAreaConverter;
 	@Autowired
 	private BuildingConverter buildingConverter;
+	@Autowired
+	private UserConverter userConverter;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -101,9 +104,6 @@ public class BuildingServiceImpl implements BuildingService {
 			List<UserEntity> userEntities = buildingRepository.findById(buildingDTO.getId()).get().getUsers();
 			buildingEntity.setUsers(userEntities);
 		}
-		for (RentAreaEntity item : buildingEntity.getRentAreas()) {
-			item.setBuilding(buildingEntity);
-		}
 		buildingRepository.save(buildingEntity);
 
 	}
@@ -126,23 +126,24 @@ public class BuildingServiceImpl implements BuildingService {
 		if (roles.contains("ROLE_staff")) {
 			MyUserDetail myUserDetail = MyUserDetail.class
 					.cast(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//			BuildingSearchBuilder builderSearchBuilder = buildingConverter.convertSearchRequestToSearchBuilder(request);
-			UserEntity userEntity = userRepository.findById(myUserDetail.getId()).get();
-			List<BuildingEntity> buildingEntities = userEntity.getBuildings();
-			for (BuildingEntity item : buildingEntities) {
-				BuildingSearchResponse buildingSearchResponse = buildingConverter
-						.convertEntityToBuildingSearchResponse(item);
-				results.add(buildingSearchResponse);
-			}
-		} else {
-			BuildingSearchBuilder builderSearchBuilder = buildingConverter.convertSearchRequestToSearchBuilder(request);
-			List<BuildingEntity> buildingEntities = buildingRepository.findBuilding(builderSearchBuilder);
-			for (BuildingEntity item : buildingEntities) {
-				BuildingSearchResponse buildingSearchResponse = buildingConverter
-						.convertEntityToBuildingSearchResponse(item);
-				results.add(buildingSearchResponse);
-			}
+			request.setStaffId(myUserDetail.getId());
+			// UserEntity userEntity = userRepository.findById(myUserDetail.getId()).get();
+			// List<BuildingEntity> buildingEntities = userEntity.getBuildings();
+			/*
+			 * for (BuildingEntity item : buildingEntities) { BuildingSearchResponse
+			 * buildingSearchResponse = buildingConverter
+			 * .convertEntityToBuildingSearchResponse(item);
+			 * results.add(buildingSearchResponse); }
+			 */
 		}
+		BuildingSearchBuilder builderSearchBuilder = buildingConverter.convertSearchRequestToSearchBuilder(request);
+		List<BuildingEntity> buildingEntities = buildingRepository.findBuilding(builderSearchBuilder);
+		for (BuildingEntity item : buildingEntities) {
+			BuildingSearchResponse buildingSearchResponse = buildingConverter
+					.convertEntityToBuildingSearchResponse(item);
+			results.add(buildingSearchResponse);
+		}
+
 		return results;
 
 	}
@@ -189,10 +190,7 @@ public class BuildingServiceImpl implements BuildingService {
 		}
 		for (UserEntity item : staffs) {
 			if (!buildingIds.contains(item.getId())) {
-				StaffResponseDTO staffResponseDTO = new StaffResponseDTO();
-				staffResponseDTO.setStaffId(item.getId());
-				staffResponseDTO.setFullName(item.getFullName());
-				staffResponseDTO.setChecked("");
+				StaffResponseDTO staffResponseDTO = userConverter.covertEntityToStaffResponseDTO(item);
 				results.add(staffResponseDTO);
 			}
 		}
