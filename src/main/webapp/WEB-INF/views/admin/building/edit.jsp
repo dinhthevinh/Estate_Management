@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@include file="/common/taglib.jsp"%>
+
 <c:url var="buildingAPI" value="/api/building" />
 <c:url var="formUrl" value="/api/user" />
 <c:url var="redirect" value="/admin/list" />
@@ -55,14 +56,6 @@
 								</select>
 								</div>
 
-								<!-- 								<label class="col-sm-3 control-label no-padding-right" -->
-								<!-- 									for="district">Quận hiện có</label> -->
-								<!-- 								<div class="col-sm-2"> -->
-								<%-- 									<form:select cssClass="form-control " path="district"> --%>
-								<%-- 										<form:option value="" label="--Chọn quận--" /> --%>
-								<%-- 										<form:options items="${districts}" /> --%>
-								<%-- 									</form:select> --%>
-								<!-- 								</div> -->
 							</div>
 
 							<div class="form-group">
@@ -319,12 +312,12 @@
 
 	<script>
 		$('#district').val('${buildingModel.district}');
-		<c:forEach var="item" items="${buildingModel.types}">
-		$('#${item}')[0].checked = true;
+    	<c:forEach var="item" items="${buildingModel.types}">
+			$('#${item}')[0].checked = true;
 		</c:forEach>
-		console.log("c");
+
 		 $('#btnAddBuilding').click(function(e) {
-			e.preventDefault();
+			e.preventDefault();	
 			//call api addBuilding
 			var data = {}; // định dạng jason nhưng data là javaScript Object phải chuyển sang jason để sever nhận
 			var buildingTypes = []; //mảng
@@ -337,10 +330,7 @@
 				}
 
 			});
-			//data['numberOfBasement'] = 100; // 100 ở đây là value
-			//data['rentArea'] = '100,200,300';
-			//buildingTypes.push('tang-tret');
-			//buildingTypes.push('nguyen-can');
+			
 			data['types'] = buildingTypes;
 			data['id'] = "${buildingModel.id}";
 			$.ajax({

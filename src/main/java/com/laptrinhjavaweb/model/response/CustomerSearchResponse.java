@@ -6,7 +6,7 @@ public class CustomerSearchResponse {
 	private Long id;
 	private String fullName;
 	private String managerName;
-	private String managerPhone;
+	private String phone;
 	private String email;
 	private String demand;
 	private String createdBy;
@@ -37,12 +37,12 @@ public class CustomerSearchResponse {
 		this.managerName = managerName;
 	}
 
-	public String getManagerPhone() {
-		return managerPhone;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setManagerPhone(String managerPhone) {
-		this.managerPhone = managerPhone;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getEmail() {

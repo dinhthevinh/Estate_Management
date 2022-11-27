@@ -63,6 +63,9 @@ public class BuildingConverter {
 				areaEntities.add(areaEntity);
 			}
 			result.setRentAreas(areaEntities);
+			for (RentAreaEntity item : areaEntities) {
+				item.setBuilding(result);
+			}
 		}
 		List<String> buildingTypes = buildingDTO.getTypes();
 		String type = String.join(",", buildingTypes);
@@ -83,11 +86,10 @@ public class BuildingConverter {
 		result.setRentArea(areaEmpty.toString());
 		List<String> buildingTypes = new ArrayList<String>();
 		String str = buildingEntity.getType();
-		if (str != null) {
-
+		if (!StringUtils.isNullOrEmpty(str)) {
 			buildingTypes = Arrays.asList(str.split(","));
-			result.setTypes(buildingTypes);
 		}
+		result.setTypes(buildingTypes);
 		return result;
 	}
 

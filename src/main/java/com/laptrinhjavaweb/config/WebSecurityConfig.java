@@ -45,10 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests().antMatchers("/admin/list").authenticated()// cho tất cả có đăng nhập
-//				.antMatchers("/admin/customer-list").authenticated() // vào trang đó.
 				.antMatchers("/admin/edit-**").authenticated()// cập nhật
 				.antMatchers("/admin/edit").hasRole("manager")// thêm mới chỉ có role manager.
-//				.antMatchers("/admin/customer-edit-**").authenticated()// cập nhật
 				.antMatchers("/admin/customer-edit").hasRole("manager")
 				.antMatchers("/login", "/resource/**", "/trang-chu", "/api/**").permitAll().and().formLogin()
 				.loginPage("/login").usernameParameter("j_username").passwordParameter("j_password").permitAll()

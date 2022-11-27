@@ -98,12 +98,15 @@
 
 							<div class="row">
 								<c:forEach var="item" items="${transactionEnums}">
+								<div>
 									<h2>${item.value}</h2>
 									<button class="btn btn-white btn-info btn-bold"
 										onclick="myFunction(this.id,${customerModel.id})"
 										id="${item.key}" title="Thêm giao dịch">
 										<i class="fa fa-plus" aria-hidden="true"></i>
 									</button>
+								</div>
+									
 
 									<table id="transactionList"
 										class="table table-striped table-bordered table-hover">
@@ -143,20 +146,18 @@
 	function myFunction(code, customerId) {
 		var data = {};
 	  let note = prompt("Thêm chi tiết giao dịch");
-	  if (note != null) {
-		 
+	  if (note != null) {	 
 	    	data['code'] = code;
 	    	data['customerId'] = customerId;
 	    	data['note'] = note;
 		  $.ajax({
 				type : "POST",
-				url : '${transactionAPI}', //thêm url api addBuilding
+				url : '${transactionAPI}', 
 				data : JSON.stringify(data), // chuyển từ javaScript Object sang Json
 				dataType : "json", // kiểu dữ liệu từ sever về client
 				contentType : "application/json",// kiểu dữ liệu từ client về sever			
 				success : function(response) {
 					console.log('success');
-// 					window.location.href = '${redirect}';
 				},
 				error : function(response) {
 					console.log('failed');
@@ -167,7 +168,6 @@
 	}
 		$('#btnAddCustomer').click(function(e) {
 			e.preventDefault();
-			//call api addBuilding
 			var data = {}; // định dạng jason nhưng data là javaScript Object phải chuyển sang jason để sever nhận		
 			var formdata = $('#formEdit').serializeArray();
 			$.each(formdata, function(index, v) {
@@ -177,7 +177,7 @@
 			data['id'] = "${customerModel.id}";
 			$.ajax({
 				type : "POST",
-				url : '${customerAPI}', //thêm url api addBuilding
+				url : '${customerAPI}', 
 				data : JSON.stringify(data), // chuyển từ javaScript Object sang Json
 				dataType : "json", // kiểu dữ liệu từ sever về client
 				contentType : "application/json",// kiểu dữ liệu từ client về sever			

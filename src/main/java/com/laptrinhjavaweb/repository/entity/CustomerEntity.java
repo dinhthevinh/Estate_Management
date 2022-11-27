@@ -42,7 +42,8 @@ public class CustomerEntity {
 	@Column(name = "note")
 	private String note;
 
-	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE }, orphanRemoval = true)
 	private List<TransactionEntity> transactions = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.LAZY)

@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
+<%@ page import="com.laptrinhjavaweb.security.utils.SecurityUtils" %>
+
 <c:url var="buildingListURL" value="/admin/list" />
 <c:url var="loadStaffAPI" value="/api/building" />
 <c:url var="buildingAPI" value="/api/building"/>
 <c:url var="assignmentBuildingAPI" value="/api/building/assignment"/>
+<c:url var="redirect" value="/admin/list" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -15,7 +18,6 @@
 	sách người dùng
 </title>
 </head>
-
 <body>
 	<div class="main-content">
 
@@ -220,6 +222,7 @@
 				</div>
 				<!-- /.row -->
 				<br>
+ 				<c:if  test="${role == true}">
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="pull-right">
@@ -235,6 +238,8 @@
 						</div>
 					</div>
 				</div>
+<				</c:if>
+				
 				<br>
 				<div class="row">
 					<div class="col-xs-12">
@@ -312,18 +317,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 						  <tr> -->
-							<!-- 							<td><input type="checkbox" value="2" id="checkbox_2" checked></td> -->
-							<!-- 							<td>Nguyễn Văn B</td> -->
-							<!-- 						  </tr> -->
-							<!-- 						  <tr> -->
-							<!-- 							<td><input type="checkbox" value="3" id="checkbox_3"></td> -->
-							<!-- 							<td>Nguyễn Văn C</td> -->
-							<!-- 						  </tr> -->
-							<!-- 						  <tr> -->
-							<!-- 							<td><input type="checkbox" value="4" id="checkbox_4"></td> -->
-							<!-- 							<td>Nguyễn Văn D</td> -->
-							<!-- 						  </tr> -->
+
 						</tbody>
 					</table>
 					<input type="hidden" id="buildingId" name="buildingID" value="">
@@ -447,6 +441,7 @@
 				contentType : "application/json",// kiểu dữ liệu từ client về sever			
 				success : function(response) {
 					console.log('success');
+					window.location.href = '${redirect}';
 				},
 				error : function(response) {
 					console.log('failed');

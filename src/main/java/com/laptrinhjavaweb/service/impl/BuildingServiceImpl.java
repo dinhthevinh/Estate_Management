@@ -97,13 +97,11 @@ public class BuildingServiceImpl implements BuildingService {
 	@Transactional
 	public void save(BuildingDTO buildingDTO) {
 		BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
-		List<RentAreaEntity> rentAreaEntities = new ArrayList<>();
 		if (buildingDTO.getId() != null) {
-			rentAreaEntities = buildingRepository.findById(buildingDTO.getId()).get().getRentAreas();
-			buildingEntity.getRentAreas().removeAll(rentAreaEntities);
 			List<UserEntity> userEntities = buildingRepository.findById(buildingDTO.getId()).get().getUsers();
 			buildingEntity.setUsers(userEntities);
 		}
+
 		buildingRepository.save(buildingEntity);
 
 	}
@@ -127,14 +125,6 @@ public class BuildingServiceImpl implements BuildingService {
 			MyUserDetail myUserDetail = MyUserDetail.class
 					.cast(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 			request.setStaffId(myUserDetail.getId());
-			// UserEntity userEntity = userRepository.findById(myUserDetail.getId()).get();
-			// List<BuildingEntity> buildingEntities = userEntity.getBuildings();
-			/*
-			 * for (BuildingEntity item : buildingEntities) { BuildingSearchResponse
-			 * buildingSearchResponse = buildingConverter
-			 * .convertEntityToBuildingSearchResponse(item);
-			 * results.add(buildingSearchResponse); }
-			 */
 		}
 		BuildingSearchBuilder builderSearchBuilder = buildingConverter.convertSearchRequestToSearchBuilder(request);
 		List<BuildingEntity> buildingEntities = buildingRepository.findBuilding(builderSearchBuilder);

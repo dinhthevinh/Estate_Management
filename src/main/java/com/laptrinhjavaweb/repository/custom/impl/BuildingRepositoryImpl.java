@@ -29,14 +29,6 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 
 	@Override
 	public List<BuildingEntity> findBuilding(Map<String, String> requestParams, List<String> types) {
-		// JPQL
-//		String sql = "FROM BuildingEntity";
-//		Query query = entityManager.createQuery(sql, BuildingEntity.class);
-//		return query.getResultList();
-		// SQL native.
-//		String sql = "select * from building";
-//		Query query = entityManager.createNativeQuery(sql, BuildingEntity.class);
-//		return query.getResultList();
 		StringBuilder sql = new StringBuilder();
 		sql = buildSqlJoining(requestParams, types, sql);
 		sql.append(" " + SystemConstant.one_equal_one + " ");
@@ -71,7 +63,6 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 	private StringBuilder buildSqlCommon(Map<String, String> requestParams, List<String> types, StringBuilder sql) {
 
 		for (Map.Entry<String, String> item : requestParams.entrySet()) {
-//			System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue());
 			if (!item.getKey().equals("staffid") && !item.getKey().equals("types") && !item.getKey().equals("district")
 					&& !item.getKey().startsWith("rentarea") && !item.getKey().startsWith("rentprice")) {
 				String value = item.getValue().toString();
@@ -177,7 +168,6 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 		Integer rentAreaFrom = builder.getRentAreaFrom();
 		Integer rentAreaTo = builder.getRentAreaTo();
 		List<String> buildingTypes = builder.getBuildingTypes();
-
 		if (buildingTypes != null && buildingTypes.size() != 0) {
 			sql.append(" and (");
 			String sqlJoin = buildingTypes.stream().map(item -> "building.type like '%" + item + "%'")

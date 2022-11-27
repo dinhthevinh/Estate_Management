@@ -4,9 +4,8 @@
 <c:url var="customerListURL" value="/admin/customer-list" />
 <c:url var="loadStaffAPI" value="/api/customer" />
 <c:url var="assignmentCustomerAPI" value="/api/customer/assignment" />
-
 <c:url var="customerAPI" value="/api/customer" />
-
+<c:url var="redirect" value="/admin/customer-list" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -31,8 +30,8 @@
 				</script>
 
 				<ul class="breadcrumb">
-					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="<c:url value='/admin/home'></c:url>">Home</a>
-					</li>
+					<li><i class="ace-icon fa fa-home home-icon"></i> <a
+						href="<c:url value='/admin/home'></c:url>">Home</a></li>
 					<li class="active">Dashboard</li>
 				</ul>
 				<!-- /.breadcrumb -->
@@ -165,20 +164,24 @@
 											id="checkbox_1"></td>
 										<td>${item.fullName}</td>
 										<td>${item.managerName}</td>
-										<td>${item.managerPhone}</td>
+										<td>${item.phone}</td>
 										<td>${item.email}</td>
 										<td>${item.demand}</td>
 										<td>${item.createdBy}</td>
 										<td>${item.createdDate}</td>
 										<td>${item.status}</td>
 										<td>
-																						<button class="btn btn-xs btn-info" data-toggle="tooltip"
-																							title="Giao khách hàng" onclick="assignmentCustomer(${item.id})">
-																							<i class="fa fa-bars" aria-hidden="true"></i>
-																						</button> 											<button class="btn btn-xs btn-info" data-toggle="tooltip"
-																							title="Cập nhật " onclick="updateCustomer(${item.id})">
-																							<a href="<c:url value='/admin/customer-edit-${item.id}'></c:url>"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>				
-																						</button>
+											<button class="btn btn-xs btn-info" data-toggle="tooltip"
+												title="Giao khách hàng"
+												onclick="assignmentCustomer(${item.id})">
+												<i class="fa fa-bars" aria-hidden="true"></i>
+											</button>
+											<button class="btn btn-xs btn-info" data-toggle="tooltip"
+												title="Cập nhật " onclick="updateCustomer(${item.id})">
+												<a
+													href="<c:url value='/admin/customer-edit-${item.id}'></c:url>"><i
+													class="fa fa-pencil-square" aria-hidden="true"></i></a>
+											</button>
 										</td>
 									</tr>
 								</c:forEach>
@@ -338,6 +341,7 @@
 				contentType : "application/json",// kiểu dữ liệu từ client về sever			
 				success : function(response) {
 					console.log('success');
+					window.location.href = '${redirect}';
 				},
 				error : function(response) {
 					console.log('failed');

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.laptrinhjavaweb.model.request.BuildingSearchRequest;
+import com.laptrinhjavaweb.security.utils.SecurityUtils;
 import com.laptrinhjavaweb.service.BuildingService;
 import com.laptrinhjavaweb.service.UserService;
 
@@ -29,6 +30,7 @@ public class BuildingController {
 		mav.addObject("districts", buildingService.getDistricts());
 		mav.addObject("buildingTypes", buildingService.getBuildingTypes());
 		mav.addObject("buildings", buildingService.findBuilding(request));
+		mav.addObject("role", SecurityUtils.getAuthorities().contains("ROLE_manager"));
 		return mav;
 	}
 
@@ -46,9 +48,7 @@ public class BuildingController {
 		ModelAndView mav = new ModelAndView("admin/building/edit");
 		mav.addObject("buildingTypes", buildingService.getBuildingTypes());
 		mav.addObject("districts", buildingService.getDistricts());
-		if (!(buildingid == null)) {
-			mav.addObject("buildingModel", buildingService.findBuildingById(buildingid));
-		}
+		mav.addObject("buildingModel", buildingService.findBuildingById(buildingid));
 		return mav;
 	}
 

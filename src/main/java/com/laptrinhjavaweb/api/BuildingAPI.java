@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +20,6 @@ import com.laptrinhjavaweb.model.response.ResponseDTO;
 import com.laptrinhjavaweb.service.AssignmentBuildingService;
 import com.laptrinhjavaweb.service.BuildingService;
 
-//@Controller
 @RestController
 @RequestMapping("/api/building")
 public class BuildingAPI {
@@ -31,28 +29,17 @@ public class BuildingAPI {
 	@Autowired
 	private AssignmentBuildingService assignmentBuildingService;
 
-//	@RequestMapping(method = RequestMethod.GET)
-
 	@GetMapping
 	public List<BuildingSearchResponse> findBuilding(@RequestParam Map<String, String> requestParams,
 			@RequestParam(value = "types", required = false) List<String> types) {
 		List<BuildingSearchResponse> resutls = buildingService.findBuilding(requestParams, types);
 		return resutls;
-
 	}
 
-//	@RequestMapping(method = RequestMethod.POST)
 	@PostMapping
 	public BuildingDTO insertBuilding(@RequestBody BuildingDTO newBuilding) {
 		buildingService.save(newBuilding);
 		return newBuilding;
-	}
-
-//	@RequestMapping( method = RequestMethod.PUT)
-	@PutMapping
-	public BuildingDTO updateBuilding(@RequestBody BuildingDTO updateBuilding) {
-		buildingService.save(updateBuilding);
-		return updateBuilding;
 	}
 
 	@DeleteMapping
@@ -61,7 +48,6 @@ public class BuildingAPI {
 		return buildingDTO;
 	}
 
-//	@RequestMapping(value ="/{buildingid}", method = RequestMethod.GET)
 	@GetMapping("/{buildingid}")
 	public BuildingDTO getBuildingDetail(@PathVariable("buildingid") Long id) {
 		BuildingDTO resutl = new BuildingDTO();
