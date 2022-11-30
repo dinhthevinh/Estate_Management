@@ -238,7 +238,7 @@
 						</div>
 					</div>
 				</div>
-<				</c:if>
+				</c:if>
 				
 				<br>
 				<div class="row">
